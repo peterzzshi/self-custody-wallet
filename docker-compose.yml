@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: walletd
+      POSTGRES_PASSWORD: walletd
+      POSTGRES_DB: walletd
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U walletd"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  anvil:
+    # Pinned by digest at M0; update digest at each milestone that requires
+    # a new Anvil feature. Never use :latest.
+    image: ghcr.io/foundry-rs/foundry:latest
+    entrypoint: anvil
+    command:
+      - --host=0.0.0.0
+      - --port=8545
+      - --chain-id=31337
+      - --block-time=1
+      - --state=/data/anvil-state.json
+    ports:
+      - "8545:8545"
+    volumes:
+      - ./deploy/anvil:/data
+
+  bundler:
+    # Alto bundler — pinned by digest at M4 when EntryPoint is deployed.
+    # Placeholder: replace image + command before M4.
+    image: ghcr.io/pimlicolabs/mock-alto-bundler:latest
+    environment:
+      ALTO_ENTRYPOINT_ADDRESS: "0x0000000071727De22E5E9d8BAf0edAc6f37da032"
+      ALTO_RPC_URL: "http://anvil:8545"
+    ports:
+      - "4337:4337"
+    depends_on:
+      anvil:
+        condition: service_started
+
+volumes:
+  postgres_data:

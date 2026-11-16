@@ -1,0 +1,16 @@
+[package]
+name = "smart-account"
+version = "0.1.0"
+description = "PDA smart account for self-custody-wallet"
+edition = "2021"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "smart_account"
+
+[features]
+no-entrypoint = []
+
+[dependencies]
+anchor-lang = "0.30"

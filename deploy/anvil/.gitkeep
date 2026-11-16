@@ -1,0 +1,2 @@
+# Anvil state snapshot. Populated by `make up` on first boot.
+# Committed as empty so the volume mount path exists on a clean clone.

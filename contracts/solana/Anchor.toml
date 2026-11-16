@@ -1,0 +1,12 @@
+[programs.localnet]
+smart_account = "Fg6PaFFmS5q6S5rk6pJ2A6q7Q5q6S5rk6pJ2A6q7Q5q6"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "localnet"
+wallet = ""
+
+[scripts]
+test = "yarn run mocha -t 1000000 tests/"
